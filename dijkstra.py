@@ -1,4 +1,13 @@
+#----------------------------------------------------------------------
+# Implementation of the Dijkstra's Algorithm
+# This program requires no libraries like pandas, numpy...
+# and the graph DataStructure is a dictionary of dictionaries
+#
+# Created by [HakimZiani - zianianakim@gmail.com]
+#----------------------------------------------------------------------
 
+
+# the key in the graph dic is the node and the value is it's neighbors
 graph = {'A':{'B':1,'D':7},
 'B':{'A':1,'C':3,'E':1},
 'C':{'B':3,'D':2,'E':8},
@@ -9,20 +18,12 @@ def printGraph(graph):
     for x , y in graph.items():
         print(x + " in relation with : " + str(y))
 printGraph(graph)
+# Initialize the Start and End node
 StartNode  = input("Enter Start Node : ")
 EndNode = input("Enter End Node : ")
-
-def getMinimalValue(d):
-    min = 999999
-    a = 'ERROR' # to view if the value don't change
-    for x,y in d.items():
-        if y[0] < min:
-            a = x
-            min = y[0]
-    return a
-
-# d = {'A':[0,''],'B':[9999,''],'C':[9999,''],'D':[9999,''],'E':[9999,''],'F':[9999,''],'G':[9999,'']
-# ,'H':[9999,''],'I':[9999,'']}
+# initList function for crating the queues of unvesited nodes
+# and data
+# The Structure is : {'node':[Distance,'prev-node']}
 def initList(graph,StartNode,EndNOde):
     d={}
     for x in graph.keys():
@@ -31,21 +32,27 @@ def initList(graph,StartNode,EndNOde):
         else: 
             d[x] =[99999,''] 
     return d
+# getMinimalValue function to return the label of the node that 
+# has the minimal value  
+def getMinimalValue(d):
+    min = 999999
+    a = 'ERROR' # to see if the value don't change
+    for x,y in d.items():
+        if y[0] < min:
+            a = x
+            min = y[0]
+    return a
 
 d= initList(graph,StartNode,EndNode)
 unvisited = initList(graph,StartNode,EndNode)
-#d = {'A':[9999,''],'B':[9999,''],'C':[0,''],'D':[9999,''],'E':[9999,'']}
-# unvisited =  {'A':[9999,''],'B':[9999,''],'C':[0,''],'D':[9999,''],'E':[9999,''],'F':[9999,''],'G':[9999,'']
-# ,'H':[9999,''],'I':[9999,'']}
-
 while(True):
-    
+    #get the node to work with    
     focus = getMinimalValue(unvisited)
+    # Break if it's the destination 
     if focus == EndNode:
         break
+    # Setting the Data queue 
     for x,y in graph[focus].items():
-        #x = B and y = 1
-        #x = C and y = 4
         if d[x][0] > d[focus][0]+y:
             d[x][0] = d[focus][0]+y
             d[x][1] = focus
@@ -57,9 +64,12 @@ while(True):
     del unvisited[focus]
 road = []
 node= EndNode
+# d now contains the final data queue we need
+# All we have to do is getting the right path from the EndNode
+# to the StartNode using the prev states stored in d 
 while (node != StartNode):
     road.append(node)
     node = d[node][1]
 road.append(StartNode)    
-
+# Showing the result 
 print("The shortest road is : "+"-->".join(reversed(road)))
