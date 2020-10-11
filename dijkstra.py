@@ -7,7 +7,7 @@
 #----------------------------------------------------------------------
 
 
-# the key in the graph dic is the node and the value is it's neighbors
+# the key in the graph dic is the node and the value is its neighbors
 graph = {'A':{'B':1,'D':7},
 'B':{'A':1,'C':3,'E':1},
 'C':{'B':3,'D':2,'E':8},
